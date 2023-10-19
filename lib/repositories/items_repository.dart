@@ -13,7 +13,7 @@ class ItemsRepository {
           id: doc.id,
           title: doc['title'],
           imageURL: doc['image_url'],
-          relaseDate: (doc['releaseDate'] as Timestamp).toDate(),
+          relaseDate: (doc['release_date'] as Timestamp).toDate(),
         );
       }).toList();
     });
@@ -21,6 +21,17 @@ class ItemsRepository {
 
   Future<void> delete({required String id}) {
     return FirebaseFirestore.instance.collection('items').doc(id).delete();
+  }
+
+  Future<ItemModel> get({required String id}) async {
+    final doc =
+        await FirebaseFirestore.instance.collection('items').doc(id).get();
+    return ItemModel(
+      id: doc.id,
+      title: doc['title'],
+      imageURL: doc['image_url'],
+      relaseDate: (doc['release_date'] as Timestamp).toDate(),
+    );
   }
 
   Future<void> add(
